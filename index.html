@@ -131,9 +131,20 @@
             <p class="text-[11px] text-slate-500 mt-0.5 mb-5">Autentikasi keamanan sistem</p>
 
             <form onsubmit="handleLogin(event)" class="space-y-3.5">
-                <div>
+                <div class="relative">
                     <input type="password" id="loginPassword" placeholder="••••••••••••" 
-                        class="w-full px-4 py-3 glass-input rounded-xl text-xs font-semibold text-center tracking-widest">
+                        class="w-full px-4 py-3 glass-input rounded-xl text-xs font-semibold text-center tracking-widest pr-10">
+                    <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 focus:outline-none">
+                        <!-- Icon Mata Tertutup (Default) -->
+                        <svg id="eyeIconClosed" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+                        </svg>
+                        <!-- Icon Mata Terbuka (Hidden by default) -->
+                        <svg id="eyeIconOpen" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </button>
                 </div>
                 <button type="submit" class="w-full py-3 bg-cyber-gradient text-white font-bold rounded-xl text-xs shadow-lg shadow-pink-500/20 active:scale-95 transition-all">
                     Masuk Dashboard
@@ -172,7 +183,10 @@
 
             <!-- SELECTOR TIER DENGAN IKON & CHECKLIST HIJAU -->
             <div class="space-y-1.5 pt-1">
-                <span class="text-[10px] uppercase tracking-wider font-extrabold text-slate-500 block">Pilih Tier Jabatan:</span>
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] uppercase tracking-wider font-extrabold text-slate-500 block">Pilih Tier Jabatan:</span>
+                    <span class="text-[10px] font-semibold text-pink-600 italic">Silahkan pilih Tingkatan</span>
+                </div>
                 <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-200/60 rounded-xl">
                     
                     <!-- Tombol OJT -->
@@ -366,6 +380,59 @@
                 </table>
             </div>
 
+            <!-- KETERANGAN / BANNER KHUSUS OJT LUMP SUM DENGAN CHECKLIST -->
+            <div id="ojtLumpSumNotice" class="hidden mt-2 p-3 rounded-xl bg-gradient-to-r from-amber-500/10 via-pink-500/10 to-purple-500/10 border border-pink-500/30 space-y-2">
+                <div class="flex items-center justify-between border-b border-pink-200/50 pb-1.5">
+                    <span class="font-extrabold text-[11px] text-slate-900 flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
+                        Bonus Lump Sum OJT Target Pencapaian
+                    </span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 pt-0.5">
+                    <!-- Kotak 3 Closing -->
+                    <div id="lumpSumCard3" class="relative bg-white/80 p-2.5 rounded-lg border border-slate-200/70 text-center shadow-xs transition-all">
+                        <!-- Checklist Hijau Dinamis -->
+                        <div id="checkLumpSum3" class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-emerald-500 text-white items-center justify-center text-[11px] font-black hidden shadow-md animate-bounce">✓</div>
+                        <span class="text-[9px] font-bold text-slate-500 block uppercase tracking-wider">Minimal 3 Closing (SA)</span>
+                        <span class="text-xs font-black text-purple-600 block mt-0.5">Bonus Rp 325.000</span>
+                    </div>
+                    <!-- Kotak 7 Closing -->
+                    <div id="lumpSumCard7" class="relative bg-white/80 p-2.5 rounded-lg border border-slate-200/70 text-center shadow-xs transition-all">
+                        <!-- Checklist Hijau Dinamis -->
+                        <div id="checkLumpSum7" class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-emerald-500 text-white items-center justify-center text-[11px] font-black hidden shadow-md animate-bounce">✓</div>
+                        <span class="text-[9px] font-bold text-slate-500 block uppercase tracking-wider">Minimal 7 Closing (SA)</span>
+                        <span class="text-xs font-black text-pink-600 block mt-0.5">Bonus Rp 600.000</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BANNER PENEGASAN EKSKLUSIF MULTIPLIER & AE PRO REWARD (PRO & ELITE) -->
+            <div id="proEliteNotice" class="hidden mt-2 p-3 rounded-xl bg-gradient-to-r from-purple-600/10 via-pink-600/10 to-blue-600/10 border-2 border-purple-500/40 space-y-2.5 shadow-sm">
+                <div class="flex items-center justify-between border-b border-purple-200 pb-1.5">
+                    <span class="font-black text-[11px] text-purple-900 flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-purple-600 animate-spin" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+                        Pencapaian Multiplier & Exclusive Reward Pro
+                    </span>
+                    <span class="text-[9px] bg-purple-600 text-white font-extrabold px-2 py-0.5 rounded-full shadow-xs">PENTING</span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <!-- Kotak Multiplier Aktif -->
+                    <div id="multiplierBadgeCard" class="relative bg-white/90 p-2.5 rounded-xl border border-purple-200 text-center shadow-xs flex flex-col justify-center">
+                        <div id="checkMultiplierBadge" class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-emerald-500 text-white items-center justify-center text-[11px] font-black hidden shadow-md animate-bounce">✓</div>
+                        <span class="text-[9px] font-extrabold text-slate-500 block uppercase tracking-wider">Status Multiplier Tier</span>
+                        <span class="text-xs font-black text-purple-700 block mt-0.5" id="badgeMultiplierVal">0x (Tier 1-6)</span>
+                    </div>
+
+                    <!-- Kotak Exclusive Reward >= 26 SA -->
+                    <div id="rewardBadgeCard" class="relative bg-white/90 p-2.5 rounded-xl border border-pink-200 text-center shadow-xs flex flex-col justify-center">
+                        <div id="checkRewardBadge" class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-emerald-500 text-white items-center justify-center text-[11px] font-black hidden shadow-md animate-bounce">✓</div>
+                        <span class="text-[9px] font-extrabold text-pink-600 block uppercase tracking-wider">AE Pro Reward (&gt;= 26 SA)</span>
+                        <span class="text-xs font-black text-pink-600 block mt-0.5">Bonus Rp 2.000.000</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- RINCIAN FAKTOR MULTIPLIER TIER MOBILE -->
             <div class="mt-2 pt-2 border-t border-slate-200 space-y-1.5 text-[11px]" id="multiplierDetailCard">
                 <div class="bg-white/80 border border-slate-200/80 rounded-xl p-2.5 flex justify-between items-center">
@@ -381,7 +448,7 @@
                     <span class="font-bold text-slate-900" id="detailBaseActivation">Rp 0</span>
                 </div>
                 <div class="bg-purple-50 border border-purple-200 rounded-xl p-2.5 flex justify-between items-center">
-                    <span class="font-extrabold text-purple-900">Total Multiplier Ins:</span>
+                    <span class="text-extrabold text-purple-900">Total Multiplier Ins:</span>
                     <span class="font-black text-purple-600 text-xs" id="detailTotalMultiplierIns">Rp 0</span>
                 </div>
             </div>
@@ -448,6 +515,22 @@
     </div>
 
     <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('loginPassword');
+            const eyeClosed = document.getElementById('eyeIconClosed');
+            const eyeOpen = document.getElementById('eyeIconOpen');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeClosed.classList.add('hidden');
+                eyeOpen.classList.remove('hidden');
+            } else {
+                passwordInput.type = 'password';
+                eyeOpen.classList.add('hidden');
+                eyeClosed.classList.remove('hidden');
+            }
+        }
+
         function handleLogin(e) {
             e.preventDefault();
             const pass = document.getElementById('loginPassword').value;
@@ -473,14 +556,14 @@
             ojt: {
                 baseSalary: 2500000,
                 ftthProducts: [
-                    { label: "FTTH 0 - 228.999", incentive: 0, sa: 0 },
-                    { label: "FTTH 229.000 - 299.999", incentive: 50000, sa: 0 },
-                    { label: "FTTH 300.000 - 399.999", incentive: 100000, sa: 0 },
-                    { label: "FTTH 400.000 - 599.999", incentive: 125000, sa: 0 },
-                    { label: "FTTH 600.000+", incentive: 200000, sa: 0 }
+                    { label: "0 - 228.999", incentive: 0, sa: 0 },
+                    { label: "229.000 - 299.999", incentive: 50000, sa: 0 },
+                    { label: "300.000 - 399.999", incentive: 100000, sa: 0 },
+                    { label: "400.000 - 599.999", incentive: 125000, sa: 0 },
+                    { label: "600.000+", incentive: 200000, sa: 0 }
                 ],
                 fwaProducts: [
-                    { label: "FWA >= 219 Mbps", incentive: 50000, sa: 0 }
+                    { label: ">= 219", incentive: 50000, sa: 0 }
                 ],
                 pxgyProducts: [
                     { label: "3-5 months", acqIncentive: 125000, specialIncentive: 125000, sa: 0 },
@@ -497,14 +580,14 @@
             pro: {
                 baseSalary: 3600000,
                 ftthProducts: [
-                    { label: "FTTH 0 - 228.999", incentive: 0, sa: 0 },
-                    { label: "FTTH 229.000 - 299.999", incentive: 50000, sa: 0 },
-                    { label: "FTTH 300.000 - 399.999", incentive: 100000, sa: 0 },
-                    { label: "FTTH 400.000 - 599.999", incentive: 125000, sa: 0 },
-                    { label: "FTTH 600.000+", incentive: 200000, sa: 0 }
+                    { label: "0 - 228.999", incentive: 0, sa: 0 },
+                    { label: "229.000 - 299.999", incentive: 50000, sa: 0 },
+                    { label: "300.000 - 399.999", incentive: 100000, sa: 0 },
+                    { label: "400.000 - 599.999", incentive: 125000, sa: 0 },
+                    { label: "600.000+", incentive: 200000, sa: 0 }
                 ],
                 fwaProducts: [
-                    { label: "FWA >= 219 Mbps", incentive: 50000, sa: 0 }
+                    { label: ">= 219", incentive: 50000, sa: 0 }
                 ],
                 pxgyProducts: [
                     { label: "3-5 months", acqIncentive: 125000, specialIncentive: 125000, sa: 0 },
@@ -523,14 +606,14 @@
             elite: {
                 baseSalary: 4737670,
                 ftthProducts: [
-                    { label: "FTTH 0 - 228.999", incentive: 0, sa: 0 },
-                    { label: "FTTH 229.000 - 299.999", incentive: 50000, sa: 0 },
-                    { label: "FTTH 300.000 - 399.999", incentive: 100000, sa: 0 },
-                    { label: "FTTH 400.000 - 599.999", incentive: 125000, sa: 0 },
-                    { label: "FTTH 600.000+", incentive: 200000, sa: 0 }
+                    { label: "0 - 228.999", incentive: 0, sa: 0 },
+                    { label: "229.000 - 299.999", incentive: 50000, sa: 0 },
+                    { label: "300.000 - 399.999", incentive: 100000, sa: 0 },
+                    { label: "400.000 - 599.999", incentive: 125000, sa: 0 },
+                    { label: "600.000+", incentive: 200000, sa: 0 }
                 ],
                 fwaProducts: [
-                    { label: "FWA >= 219 Mbps", incentive: 50000, sa: 0 }
+                    { label: ">= 219", incentive: 50000, sa: 0 }
                 ],
                 pxgyProducts: [
                     { label: "3-5 months", acqIncentive: 125000, specialIncentive: 125000, sa: 0 },
@@ -778,16 +861,51 @@
                 proRewardRowEl.classList.add('hidden');
             }
 
+            const ojtNoticeEl = document.getElementById('ojtLumpSumNotice');
+            const check3El = document.getElementById('checkLumpSum3');
+            const check7El = document.getElementById('checkLumpSum7');
+            const card3El = document.getElementById('lumpSumCard3');
+            const card7El = document.getElementById('lumpSumCard7');
+
+            const proEliteNoticeEl = document.getElementById('proEliteNotice');
+            const checkMultiplierBadgeEl = document.getElementById('checkMultiplierBadge');
+            const checkRewardBadgeEl = document.getElementById('checkRewardBadge');
+            const multiplierBadgeCardEl = document.getElementById('multiplierBadgeCard');
+            const rewardBadgeCardEl = document.getElementById('rewardBadgeCard');
+            const badgeMultiplierValEl = document.getElementById('badgeMultiplierVal');
+
             if (currentType === 'ojt') {
+                ojtNoticeEl.classList.remove('hidden');
+                proEliteNoticeEl.classList.add('hidden');
                 let lumpSum = 0;
                 let activeRowIdx = -1;
+
+                // Reset Checklist & Card style
+                check3El.classList.remove('flex');
+                check3El.classList.add('hidden');
+                check7El.classList.remove('flex');
+                check7El.classList.add('hidden');
+                card3El.className = "relative bg-white/80 p-2.5 rounded-lg border border-slate-200/70 text-center shadow-xs transition-all";
+                card7El.className = "relative bg-white/80 p-2.5 rounded-lg border border-slate-200/70 text-center shadow-xs transition-all";
 
                 if (prodTotalSAVal >= 7) {
                     lumpSum = 600000;
                     activeRowIdx = 3; 
+
+                    // Aktifkan checklist HANYA pada kotak 7 closing
+                    check7El.classList.remove('hidden');
+                    check7El.classList.add('flex');
+
+                    card7El.className = "relative bg-emerald-50/90 p-2.5 rounded-lg border-2 border-emerald-500 text-center shadow-md transition-all scale-[1.02]";
                 } else if (prodTotalSAVal >= 3) {
                     lumpSum = 325000;
                     activeRowIdx = 1; 
+
+                    // Aktifkan checklist HANYA pada kotak 3 closing
+                    check3El.classList.remove('hidden');
+                    check3El.classList.add('flex');
+
+                    card3El.className = "relative bg-emerald-50/90 p-2.5 rounded-lg border-2 border-emerald-500 text-center shadow-md transition-all scale-[1.02]";
                 }
 
                 if (activeRowIdx !== -1) {
@@ -800,6 +918,8 @@
 
                 totalIncentiveOnly = sumProdMix + sumProdIncentive + lumpSum + sumSpecialFWA + sumPXGYAcq + sumPXGYSpc + proRewardVal;
             } else {
+                ojtNoticeEl.classList.add('hidden');
+                proEliteNoticeEl.classList.remove('hidden');
                 document.getElementById('multiplierDetailCard').style.display = 'block';
 
                 let multiplierVal = 0;
@@ -817,6 +937,30 @@
 
                 if (activeRowIdx !== -1) {
                     document.getElementById(`prod-multi-${activeRowIdx}`).classList.add('stabilo-green-cell');
+                }
+
+                // Reset Multiplier & Reward Badge UI
+                checkMultiplierBadgeEl.classList.remove('flex');
+                checkMultiplierBadgeEl.classList.add('hidden');
+                multiplierBadgeCardEl.className = "relative bg-white/90 p-2.5 rounded-xl border border-purple-200 text-center shadow-xs flex flex-col justify-center transition-all";
+
+                checkRewardBadgeEl.classList.remove('flex');
+                checkRewardBadgeEl.classList.add('hidden');
+                rewardBadgeCardEl.className = "relative bg-white/90 p-2.5 rounded-xl border border-pink-200 text-center shadow-xs flex flex-col justify-center transition-all";
+
+                // Update Multiplier Badge Text & Checklist jika Multiplier > 0
+                badgeMultiplierValEl.innerText = `${multiplierVal}x (${tierNameText})`;
+                if (multiplierVal > 0) {
+                    checkMultiplierBadgeEl.classList.remove('hidden');
+                    checkMultiplierBadgeEl.classList.add('flex');
+                    multiplierBadgeCardEl.className = "relative bg-purple-50/95 p-2.5 rounded-xl border-2 border-purple-500 text-center shadow-md flex flex-col justify-center transition-all scale-[1.02]";
+                }
+
+                // Update Reward Badge Checklist jika mencapai target >= 26 SA
+                if (currentType === 'pro' && combinedTotalClosingSA >= 26) {
+                    checkRewardBadgeEl.classList.remove('hidden');
+                    checkRewardBadgeEl.classList.add('flex');
+                    rewardBadgeCardEl.className = "relative bg-pink-50/95 p-2.5 rounded-xl border-2 border-pink-500 text-center shadow-md flex flex-col justify-center transition-all scale-[1.02]";
                 }
 
                 let multiIncentive = multiplierVal * baseAccumulatedForMultiplier;

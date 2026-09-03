@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AE Pro Next-Gen Executive Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+            background: linear-gradient(135deg, #fff5f7 0%, #fdf2f8 50%, #f3e8ff 100%);
+            color: #1f2937;
+            min-height: 100vh;
+        }
+        /* Custom Gradient & Glow Themes (Bright Modern Theme) */
+        .bg-cyber-gradient {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #db2777 100%);
+        }
+        .text-cyber-gradient {
+            background: linear-gradient(135deg, #1d4ed8 0%, #6d28d9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card-mobile {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(219, 39, 119, 0.12);
+            box-shadow: 0 10px 30px -5px rgba(219, 39, 119, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+        }
+        .glass-input {
+            background: rgba(249, 250, 251, 0.9);
+            border: 1px solid rgba(209, 213, 219, 0.8);
+            color: #111827;
+            transition: all 0.3s ease;
+        }
+        .glass-input:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.15);
+            outline: none;
+        }
+        /* Ornamen Background Glow Terang Pink */
+        .glow-orb-1 {
+            position: fixed;
+            top: -10%;
+            left: -20%;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(244, 114, 182, 0.25) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .glow-orb-2 {
+            position: fixed;
+            bottom: 10%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.18) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .glow-orb-3 {
+            position: fixed;
+            top: 40%;
+            right: 20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .stabilo-green-cell {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.85) 0%, rgba(5, 150, 105, 0.9)) !important;
+            color: #ffffff !important;
+            font-weight: 800 !important;
+            border: 1px solid #059669;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+            animation: pulse-soft 2s infinite;
+        }
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.95; transform: scale(0.99); }
+        }
+        .click-pulse {
+            animation: clickEffect 0.2s ease;
+        }
+        @keyframes clickEffect {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.96); }
+            100% { transform: scale(1); }
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(243, 244, 246, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(124, 58, 237, 0.3);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen py-3 px-2 selection:bg-pink-500 selection:text-white text-xs">
+
+    <!-- ORNAMEN BACKGROUND GLOW -->
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+    <div class="glow-orb-3"></div>
+
+    <!-- LOGIN SCREEN MOBILE OPTIMIZED -->
+    <div id="loginScreen" class="fixed inset-0 bg-white/75 backdrop-blur-xl flex items-center justify-center z-50 p-4">
+        <div class="glass-card-mobile w-full max-w-xs rounded-3xl p-6 shadow-2xl text-center relative overflow-hidden border border-pink-200">
+            <div class="absolute top-0 left-0 w-full h-1 bg-cyber-gradient"></div>
+            
+            <div class="w-14 h-14 rounded-2xl bg-cyber-gradient flex items-center justify-center font-black text-lg text-white mx-auto mb-3 shadow-lg shadow-pink-500/25">
+                AE
+            </div>
+            <h2 class="text-base font-extrabold text-slate-900 tracking-wide">Scheme Incentive Bandung</h2>
+            <p class="text-[11px] text-slate-500 mt-0.5 mb-5">Autentikasi keamanan sistem</p>
+
+            <form onsubmit="handleLogin(event)" class="space-y-3.5">
+                <div>
+                    <input type="password" id="loginPassword" placeholder="••••••••••••" 
+                        class="w-full px-4 py-3 glass-input rounded-xl text-xs font-semibold text-center tracking-widest">
+                </div>
+                <button type="submit" class="w-full py-3 bg-cyber-gradient text-white font-bold rounded-xl text-xs shadow-lg shadow-pink-500/20 active:scale-95 transition-all">
+                    Masuk Dashboard
+                </button>
+                <p id="loginError" class="text-[10px] text-rose-500 font-semibold hidden">Password salah! (Hint: insentifbandung)</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div id="mainDashboard" class="w-full max-w-md mx-auto space-y-3.5 hidden pb-12">
+        
+        <!-- HEADER & TIER SELECTOR MOBILE -->
+        <div class="glass-card-mobile rounded-2xl p-4 space-y-3 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-pink-400/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-cyber-gradient flex items-center justify-center font-black text-xs shadow-md text-white shadow-pink-500/20">
+                        AE
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <h1 class="text-sm font-extrabold tracking-tight text-slate-900">
+                                AE Executive
+                            </h1>
+                            <span class="text-[9px] px-1.5 py-0.2 rounded bg-gradient-to-r from-blue-600 to-pink-600 text-white font-extrabold shadow-sm">PRO</span>
+                        </div>
+                        <p class="text-slate-500 text-[10px] font-medium">Kalkulator Insentif FTTH, FWA & PXGY</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 px-2 py-1 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span class="text-[9px] text-emerald-700 font-bold uppercase tracking-wider">Live</span>
+                </div>
+            </div>
+
+            <!-- SELECTOR TIER DENGAN IKON & CHECKLIST HIJAU -->
+            <div class="space-y-1.5 pt-1">
+                <span class="text-[10px] uppercase tracking-wider font-extrabold text-slate-500 block">Pilih Tier Jabatan:</span>
+                <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-200/60 rounded-xl">
+                    
+                    <!-- Tombol OJT -->
+                    <button type="button" id="btnTierOjt" onclick="setTier('ojt')" class="relative py-2.5 px-2 rounded-lg font-bold text-[11px] transition-all text-slate-700 hover:text-slate-900 flex flex-col items-center justify-center gap-0.5">
+                        <span id="checkOjt" class="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-emerald-500 text-white items-center justify-center text-[10px] font-black hidden shadow-sm">✓</span>
+                        <div class="flex items-center gap-1">
+                            <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                            <span>OJT</span>
+                        </div>
+                        <span class="text-[9px] opacity-75 font-normal">Rp 2.5 Juta</span>
+                    </button>
+
+                    <!-- Tombol AE Pro -->
+                    <button type="button" id="btnTierPro" onclick="setTier('pro')" class="relative py-2.5 px-2 rounded-lg font-bold text-[11px] transition-all text-slate-700 hover:text-slate-900 flex flex-col items-center justify-center gap-0.5">
+                        <span id="checkPro" class="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-emerald-500 text-white items-center justify-center text-[10px] font-black hidden shadow-sm">✓</span>
+                        <div class="flex items-center gap-1">
+                            <svg class="w-3.5 h-3.5 text-purple-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            <span>AE Pro</span>
+                        </div>
+                        <span class="text-[9px] opacity-75 font-normal">Rp 3.6 Juta</span>
+                    </button>
+
+                    <!-- Tombol AE Elite -->
+                    <button type="button" id="btnTierElite" onclick="setTier('elite')" class="relative py-2.5 px-2 rounded-lg font-bold text-[11px] transition-all text-slate-700 hover:text-slate-900 flex flex-col items-center justify-center gap-0.5">
+                        <span id="checkElite" class="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-emerald-500 text-white items-center justify-center text-[10px] font-black hidden shadow-sm">✓</span>
+                        <div class="flex items-center gap-1">
+                            <svg class="w-3.5 h-3.5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                            <span>AE Elite</span>
+                        </div>
+                        <span class="text-[9px] opacity-75 font-normal">Rp 4.7 Juta</span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- EXECUTIVE SUMMARY CARDS -->
+        <div class="grid grid-cols-3 gap-2">
+            <div class="glass-card-mobile rounded-2xl p-2.5 text-center active:scale-95 transition-transform border-l-2 border-l-purple-500" onclick="triggerPulse(this)">
+                <span class="text-[9px] uppercase font-extrabold tracking-wider text-purple-700 block truncate">Gaji Pokok</span>
+                <h3 class="text-xs font-black text-slate-900 mt-1 truncate" id="dashBaseSalary">Rp 0</h3>
+            </div>
+            <div class="glass-card-mobile rounded-2xl p-2.5 text-center active:scale-95 transition-transform border-l-2 border-l-blue-500" onclick="triggerPulse(this)">
+                <span class="text-[9px] uppercase font-extrabold tracking-wider text-blue-700 block truncate">Insentif</span>
+                <h3 class="text-xs font-black text-blue-600 mt-1 truncate" id="dashTotalIncentive">Rp 0</h3>
+            </div>
+            <div class="glass-card-mobile rounded-2xl p-2.5 text-center active:scale-95 transition-transform bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-500/30" onclick="triggerPulse(this)">
+                <span class="text-[9px] uppercase font-extrabold tracking-wider text-emerald-700 block truncate">THP Bersih</span>
+                <h3 class="text-xs font-black text-emerald-600 mt-1 truncate" id="dashGrandTotal">Rp 0</h3>
+            </div>
+        </div>
+
+        <!-- SECTION 1A: FTTH Activation Incentive -->
+        <div class="glass-card-mobile rounded-2xl p-3.5 space-y-2.5 border-t-2 border-t-blue-500">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-lg bg-blue-500/15 flex items-center justify-center text-blue-600 shadow-sm border border-blue-500/30">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 017.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.5 18h.01" /></svg>
+                    </div>
+                    <h2 class="font-extrabold text-slate-900 text-xs">FTTH Activation Incentive</h2>
+                </div>
+                <span class="text-[9px] bg-blue-500/10 text-blue-700 font-bold px-2 py-0.5 rounded-full border border-blue-500/20">Fiber Optic</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-[10px] min-w-[360px]">
+                    <thead>
+                        <tr class="text-slate-500 uppercase tracking-wider border-b border-slate-200 font-bold">
+                            <th class="py-2 px-2 rounded-l-lg">Paket FTTH</th>
+                            <th class="py-2 px-2">Ins/SA</th>
+                            <th class="py-2 px-2 w-14">SA</th>
+                            <th class="py-2 px-2 rounded-r-lg">Total Act</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ftthTableBody" class="divide-y divide-slate-100"></tbody>
+                    <tfoot>
+                        <tr class="font-bold text-slate-700 border-t border-slate-200 text-[10px] bg-slate-50/50">
+                            <td colspan="2" class="py-2 px-2 text-right">Subtotal FTTH:</td>
+                            <td class="py-2 px-2 text-blue-600 font-black" id="ftthTotalSA">-</td>
+                            <td class="py-2 px-2 text-blue-600 font-black" id="ftthTotalIncentive">Rp 0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 1B: FWA Monthly -->
+        <div class="glass-card-mobile rounded-2xl p-3.5 space-y-2.5 border-t-2 border-t-pink-500">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-lg bg-pink-500/15 flex items-center justify-center text-pink-600 shadow-sm border border-pink-500/30">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.348 14.651a3.75 3.75 0 010-5.303m3.75 8.75a8.75 8.75 0 000-12.248m-7.5 15.75a13.75 13.75 0 010-19.25m15.5 13.5a3.75 3.75 0 000-5.303" /></svg>
+                    </div>
+                    <h2 class="font-extrabold text-slate-900 text-xs">FWA Monthly</h2>
+                </div>
+                <span class="text-[9px] bg-pink-500/10 text-pink-700 font-bold px-2 py-0.5 rounded-full border border-pink-500/20">Wireless</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-[10px] min-w-[360px]">
+                    <thead>
+                        <tr class="text-slate-500 uppercase tracking-wider border-b border-slate-200 font-bold">
+                            <th class="py-2 px-2 rounded-l-lg">Paket FWA</th>
+                            <th class="py-2 px-2">FWA/SA</th>
+                            <th class="py-2 px-2 w-14">SA</th>
+                            <th class="py-2 px-2 rounded-r-lg">Tot FWA</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fwaTableBody" class="divide-y divide-slate-100"></tbody>
+                    <tfoot>
+                        <tr class="font-bold text-slate-700 border-t border-slate-200 text-[10px] bg-slate-50/50">
+                            <td colspan="2" class="py-2 px-2 text-right">Subtotal FWA:</td>
+                            <td class="py-2 px-2 text-pink-600 font-black" id="fwaTotalSA">-</td>
+                            <td class="py-2 px-2 text-pink-600 font-black" id="fwaTotalIncentive">Rp 0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 1C: Pay X Get Y (PXGY) -->
+        <div class="glass-card-mobile rounded-2xl p-3.5 space-y-2.5 border-t-2 border-t-purple-500">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-lg bg-purple-500/15 flex items-center justify-center text-purple-600 shadow-sm border border-purple-500/30">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <h2 class="font-extrabold text-slate-900 text-xs">Pay X Get Y (PXGY) – Tenure</h2>
+                </div>
+                <span class="text-[9px] bg-purple-500/10 text-purple-700 font-bold px-2 py-0.5 rounded-full border border-purple-500/20">Tenure Incentive</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-[10px] min-w-[380px]">
+                    <thead>
+                        <tr class="text-slate-500 uppercase tracking-wider border-b border-slate-200 font-bold">
+                            <th class="py-2 px-2 rounded-l-lg">Tenure</th>
+                            <th class="py-2 px-2">Acq</th>
+                            <th class="py-2 px-2">Special</th>
+                            <th class="py-2 px-2 w-12">SA</th>
+                            <th class="py-2 px-2">Tot Acq</th>
+                            <th class="py-2 px-2 rounded-r-lg">Tot Spc</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pxgyTableBody" class="divide-y divide-slate-100"></tbody>
+                    <tfoot>
+                        <tr class="font-bold text-slate-700 border-t border-slate-200 text-[10px] bg-slate-50/50">
+                            <td colspan="3" class="py-2 px-2 text-right">Subtotal:</td>
+                            <td class="py-2 px-2 text-purple-600 font-black" id="pxgyTotalSA">-</td>
+                            <td class="py-2 px-2 text-purple-600 font-black" id="pxgyTotalAcqIncentive">Rp 0</td>
+                            <td class="py-2 px-2 text-purple-600 font-black rounded-r-lg" id="pxgyTotalSpecialIncentive">Rp 0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 2: Productivity Incentive & Multiplier / Lump Sum -->
+        <div class="glass-card-mobile rounded-2xl p-3.5 space-y-2.5 border border-purple-500/20">
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-2">
+                <div class="w-5 h-5 rounded-md bg-purple-500/15 flex items-center justify-center text-purple-600 font-black text-[10px] border border-purple-500/30">2</div>
+                <h2 class="font-extrabold text-slate-900 text-xs" id="sec2Title">Productivity & Multiplier Tier</h2>
+            </div>
+
+            <!-- INFO TOTAL CLOSINGAN GABUNGAN -->
+            <div class="bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 border border-blue-500/20 rounded-xl p-2.5 flex justify-between items-center text-[11px]">
+                <span class="text-slate-700 font-bold">Total Closingan (FTTH + FWA + PXGY):</span>
+                <span class="font-black text-cyber-gradient text-xs" id="combinedTotalClosingSA">0 SA</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-[10px] min-w-[360px]">
+                    <thead>
+                        <tr class="text-slate-500 uppercase tracking-wider border-b border-slate-200 font-bold">
+                            <th class="py-2 px-2 rounded-l-lg">Tier</th>
+                            <th class="py-2 px-2">Ins/SA</th>
+                            <th class="py-2 px-2">Alokasi</th>
+                            <th class="py-2 px-2">Insentif</th>
+                            <th class="py-2 px-2 rounded-r-lg" id="tableHeaderCol5">Multi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productivityTableBody" class="divide-y divide-slate-100"></tbody>
+                    <tfoot>
+                        <tr class="font-bold text-slate-700 border-t border-slate-200 text-[10px] bg-slate-50/50">
+                            <td colspan="2" class="py-2 px-2 text-right">Total:</td>
+                            <td class="py-2 px-2 text-slate-900 font-black" id="prodTotalSA">0</td>
+                            <td class="py-2 px-2 text-blue-600 font-black" id="prodTotalInsentif">Rp 0</td>
+                            <td class="py-2 px-2">-</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- RINCIAN FAKTOR MULTIPLIER TIER MOBILE -->
+            <div class="mt-2 pt-2 border-t border-slate-200 space-y-1.5 text-[11px]" id="multiplierDetailCard">
+                <div class="bg-white/80 border border-slate-200/80 rounded-xl p-2.5 flex justify-between items-center">
+                    <span class="text-slate-500 font-medium">Tier Closing:</span>
+                    <span class="font-bold text-slate-900" id="detailTierName">-</span>
+                </div>
+                <div class="bg-white/80 border border-slate-200/80 rounded-xl p-2.5 flex justify-between items-center">
+                    <span class="text-slate-500 font-medium">Faktor Multiplier:</span>
+                    <span class="font-black text-purple-600" id="detailMultiplierVal">-</span>
+                </div>
+                <div class="bg-white/80 border border-slate-200/80 rounded-xl p-2.5 flex justify-between items-center">
+                    <span class="text-slate-500 font-medium">Dasar Pengalian (FTTH + FWA + PXGY Acq):</span>
+                    <span class="font-bold text-slate-900" id="detailBaseActivation">Rp 0</span>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-xl p-2.5 flex justify-between items-center">
+                    <span class="font-extrabold text-purple-900">Total Multiplier Ins:</span>
+                    <span class="font-black text-purple-600 text-xs" id="detailTotalMultiplierIns">Rp 0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: Rincian Kalkulasi Final (Take Home Pay) -->
+        <div class="glass-card-mobile rounded-2xl p-3.5 space-y-3 border border-emerald-500/20">
+            <div class="flex items-center gap-2 border-b border-slate-200 pb-2">
+                <div class="w-5 h-5 rounded-md bg-emerald-500/15 flex items-center justify-center text-emerald-600 font-black text-[10px] border border-emerald-500/30">3</div>
+                <h2 class="font-extrabold text-slate-900 text-xs">Rincian Akhir & THP</h2>
+            </div>
+
+            <div class="space-y-1.5 text-[11px]">
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span class="text-slate-500">Gaji Pokok:</span>
+                    <span class="font-bold text-slate-900" id="sumBaseSalary">Rp 0</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span class="text-slate-500">FTTH Product Mix:</span>
+                    <span class="font-bold text-slate-900" id="sumProductMix">Rp 0</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span class="text-slate-500">FWA Monthly:</span>
+                    <span class="font-bold text-slate-900" id="sumSpecialFWA">Rp 0</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span class="text-slate-500">Insentif PXGY (Acquisition):</span>
+                    <span class="font-bold text-slate-900" id="sumPXGYAcq">Rp 0</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span class="text-slate-500">Insentif PXGY (Special):</span>
+                    <span class="font-bold text-slate-900" id="sumPXGYSpc">Rp 0</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span class="text-slate-500">Productivity Incentive:</span>
+                    <span class="font-bold text-slate-900" id="sumProdIncentive">Rp 0</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-100">
+                    <span class="text-slate-500" id="sumExtraTitle">Total Multiplier / Bonus:</span>
+                    <span class="font-bold text-slate-900" id="sumExtraVal">Rp 0</span>
+                </div>
+                <!-- BARIS AE Pro Exclusive Reward -->
+                <div class="flex justify-between py-1 border-b border-slate-100 hidden" id="proRewardRow">
+                    <span class="text-pink-600 font-extrabold">AE Pro Exclusive Reward (&gt;= 26 SA):</span>
+                    <span class="font-black text-pink-600" id="sumProReward">Rp 2.000.000</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-slate-200">
+                    <span class="text-blue-600 font-extrabold">Total Insentif Keseluruhan:</span>
+                    <span class="font-black text-blue-600" id="sumTotalIncentiveOnly">Rp 0</span>
+                </div>
+            </div>
+
+            <!-- GRAND TOTAL BANNER -->
+            <div class="bg-cyber-gradient p-3.5 rounded-xl flex justify-between items-center text-white shadow-xl shadow-pink-500/20 relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/10 backdrop-blur-[2px] pointer-events-none"></div>
+                <div class="relative z-10">
+                    <span class="text-[9px] uppercase tracking-wider font-extrabold text-white/90 block">Take Home Pay (THP)</span>
+                    <span class="text-[10px] font-medium text-white/80">Gaji + Total Insentif</span>
+                </div>
+                <span class="text-base font-black text-white relative z-10 drop-shadow-md" id="grandTotal">Rp 0</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('loginPassword').value;
+            const err = document.getElementById('loginError');
+            if(pass === 'insentifbandung') {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainDashboard').classList.remove('hidden');
+                setTier('ojt'); // Set default tier on login
+            } else {
+                err.classList.remove('hidden');
+                const box = document.querySelector('#loginScreen > div');
+                box.classList.add('click-pulse');
+                setTimeout(() => box.classList.remove('click-pulse'), 200);
+            }
+        }
+
+        function triggerPulse(el) {
+            el.classList.add('click-pulse');
+            setTimeout(() => el.classList.remove('click-pulse'), 200);
+        }
+
+        const configData = {
+            ojt: {
+                baseSalary: 2500000,
+                ftthProducts: [
+                    { label: "FTTH 0 - 228.999", incentive: 0, sa: 0 },
+                    { label: "FTTH 229.000 - 299.999", incentive: 50000, sa: 0 },
+                    { label: "FTTH 300.000 - 399.999", incentive: 100000, sa: 0 },
+                    { label: "FTTH 400.000 - 599.999", incentive: 125000, sa: 0 },
+                    { label: "FTTH 600.000+", incentive: 200000, sa: 0 }
+                ],
+                fwaProducts: [
+                    { label: "FWA >= 219 Mbps", incentive: 50000, sa: 0 }
+                ],
+                pxgyProducts: [
+                    { label: "3-5 months", acqIncentive: 125000, specialIncentive: 125000, sa: 0 },
+                    { label: ">= 6 months", acqIncentive: 150000, specialIncentive: 150000, sa: 0 }
+                ],
+                productivityTiers: [
+                    { label: "1 – 2", incentivePerSA: 80000, bonusText: "-" },
+                    { label: "3 – 4", incentivePerSA: 100000, bonusText: "Rp 325.000" },
+                    { label: "5 – 6", incentivePerSA: 130000, bonusText: "-" },
+                    { label: "7 – 9", incentivePerSA: 150000, bonusText: "Rp 600.000" },
+                    { label: ">= 10", incentivePerSA: 200000, bonusText: "-" }
+                ]
+            },
+            pro: {
+                baseSalary: 3600000,
+                ftthProducts: [
+                    { label: "FTTH 0 - 228.999", incentive: 0, sa: 0 },
+                    { label: "FTTH 229.000 - 299.999", incentive: 50000, sa: 0 },
+                    { label: "FTTH 300.000 - 399.999", incentive: 100000, sa: 0 },
+                    { label: "FTTH 400.000 - 599.999", incentive: 125000, sa: 0 },
+                    { label: "FTTH 600.000+", incentive: 200000, sa: 0 }
+                ],
+                fwaProducts: [
+                    { label: "FWA >= 219 Mbps", incentive: 50000, sa: 0 }
+                ],
+                pxgyProducts: [
+                    { label: "3-5 months", acqIncentive: 125000, specialIncentive: 125000, sa: 0 },
+                    { label: ">= 6 months", acqIncentive: 150000, specialIncentive: 150000, sa: 0 }
+                ],
+                productivityTiers: [
+                    { label: "1 – 6", incentivePerSA: 80000, multiplier: "0" },
+                    { label: "7 – 9", incentivePerSA: 150000, multiplier: "1.5" },
+                    { label: "10 – 13", incentivePerSA: 175000, multiplier: "2.0" },
+                    { label: "14 – 29", incentivePerSA: 200000, multiplier: "4.00" },
+                    { label: "30 – 39", incentivePerSA: 225000, multiplier: "4.25" },
+                    { label: "40 – 49", incentivePerSA: 250000, multiplier: "4.50" },
+                    { label: ">= 50", incentivePerSA: 275000, multiplier: "4.65" }
+                ]
+            },
+            elite: {
+                baseSalary: 4737670,
+                ftthProducts: [
+                    { label: "FTTH 0 - 228.999", incentive: 0, sa: 0 },
+                    { label: "FTTH 229.000 - 299.999", incentive: 50000, sa: 0 },
+                    { label: "FTTH 300.000 - 399.999", incentive: 100000, sa: 0 },
+                    { label: "FTTH 400.000 - 599.999", incentive: 125000, sa: 0 },
+                    { label: "FTTH 600.000+", incentive: 200000, sa: 0 }
+                ],
+                fwaProducts: [
+                    { label: "FWA >= 219 Mbps", incentive: 50000, sa: 0 }
+                ],
+                pxgyProducts: [
+                    { label: "3-5 months", acqIncentive: 125000, specialIncentive: 125000, sa: 0 },
+                    { label: ">= 6 months", acqIncentive: 150000, specialIncentive: 150000, sa: 0 }
+                ],
+                productivityTiers: [
+                    { label: "1 – 6", incentivePerSA: 80000, multiplier: "0" },
+                    { label: "7 – 9", incentivePerSA: 150000, multiplier: "1.5" },
+                    { label: "10 – 13", incentivePerSA: 175000, multiplier: "2.0" },
+                    { label: "14 – 29", incentivePerSA: 200000, multiplier: "4.00" },
+                    { label: "30 – 39", incentivePerSA: 225000, multiplier: "4.25" },
+                    { label: "40 – 49", incentivePerSA: 250000, multiplier: "4.50" },
+                    { label: ">= 50", incentivePerSA: 275000, multiplier: "4.65" }
+                ]
+            }
+        };
+
+        let currentType = 'ojt';
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+
+        function setTier(tier) {
+            currentType = tier;
+            
+            // Update UI tab buttons state & visibility of green checkmarks
+            ['ojt', 'pro', 'elite'].forEach(t => {
+                const btn = document.getElementById(`btnTier${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                const check = document.getElementById(`check${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                
+                if (t === tier) {
+                    btn.className = "relative py-2.5 px-2 rounded-lg font-bold text-[11px] transition-all bg-white text-slate-900 shadow-md border border-pink-200 scale-100 flex flex-col items-center justify-center gap-0.5";
+                    check.classList.remove('hidden');
+                    check.classList.add('flex');
+                } else {
+                    btn.className = "relative py-2.5 px-2 rounded-lg font-bold text-[11px] transition-all text-slate-600 hover:text-slate-900 flex flex-col items-center justify-center gap-0.5";
+                    check.classList.add('hidden');
+                    check.classList.remove('flex');
+                }
+            });
+
+            renderTables();
+            calculateAll();
+        }
+
+        function renderTables() {
+            const data = configData[currentType];
+            
+            if (currentType === 'ojt') {
+                document.getElementById('sec2Title').innerText = 'Productivity & Lump Sum Bonus';
+                document.getElementById('tableHeaderCol5').innerText = 'Lump Sum';
+            } else {
+                document.getElementById('sec2Title').innerText = 'Productivity & Multiplier Tier';
+                document.getElementById('tableHeaderCol5').innerText = 'Multi';
+            }
+
+            let ftthHtml = '';
+            data.ftthProducts.forEach((p, idx) => {
+                ftthHtml += `
+                    <tr class="hover:bg-pink-50/40 transition-colors text-[10px]">
+                        <td class="py-1.5 px-2 font-semibold text-slate-800">${p.label}</td>
+                        <td class="py-1.5 px-2 text-slate-500 font-medium">${formatRupiah(p.incentive)}</td>
+                        <td class="py-1.5 px-2">
+                            <input type="number" pattern="[0-9]*" inputmode="numeric" min="0" value="${p.sa}" data-type="ftth" data-index="${idx}" oninput="updateSA(this)" 
+                                class="w-12 px-1.5 py-1 glass-input rounded-lg text-center font-bold text-slate-900 shadow-inner">
+                        </td>
+                        <td class="py-1.5 px-2 text-blue-600 font-bold" id="ftth-ins-${idx}">Rp 0</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('ftthTableBody').innerHTML = ftthHtml;
+
+            let fwaHtml = '';
+            data.fwaProducts.forEach((p, idx) => {
+                fwaHtml += `
+                    <tr class="hover:bg-pink-50/40 transition-colors text-[10px]">
+                        <td class="py-1.5 px-2 font-semibold text-slate-800">${p.label}</td>
+                        <td class="py-1.5 px-2 text-slate-500 font-medium">${formatRupiah(p.incentive)}</td>
+                        <td class="py-1.5 px-2">
+                            <input type="number" pattern="[0-9]*" inputmode="numeric" min="0" value="${p.sa}" data-type="fwa" data-index="${idx}" oninput="updateSA(this)" 
+                                class="w-12 px-1.5 py-1 glass-input rounded-lg text-center font-bold text-slate-900 shadow-inner">
+                        </td>
+                        <td class="py-1.5 px-2 text-pink-600 font-bold" id="fwa-ins-${idx}">Rp 0</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('fwaTableBody').innerHTML = fwaHtml;
+
+            let pxgyHtml = '';
+            data.pxgyProducts.forEach((p, idx) => {
+                pxgyHtml += `
+                    <tr class="hover:bg-pink-50/40 transition-colors text-[10px]">
+                        <td class="py-1.5 px-2 font-semibold text-slate-800">${p.label}</td>
+                        <td class="py-1.5 px-2 text-slate-500 font-medium">${formatRupiah(p.acqIncentive)}</td>
+                        <td class="py-1.5 px-2 text-slate-500 font-medium">${formatRupiah(p.specialIncentive)}</td>
+                        <td class="py-1.5 px-2">
+                            <input type="number" pattern="[0-9]*" inputmode="numeric" min="0" value="${p.sa}" data-type="pxgy" data-index="${idx}" oninput="updateSA(this)" 
+                                class="w-10 px-1 py-1 glass-input rounded-lg text-center font-bold text-slate-900 shadow-inner">
+                        </td>
+                        <td class="py-1.5 px-2 text-purple-600 font-bold" id="pxgy-acq-ins-${idx}">Rp 0</td>
+                        <td class="py-1.5 px-2 text-purple-600 font-bold" id="pxgy-spc-ins-${idx}">Rp 0</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('pxgyTableBody').innerHTML = pxgyHtml;
+
+            let prodHtml = '';
+            data.productivityTiers.forEach((t, idx) => {
+                let colVal = currentType === 'ojt' ? t.bonusText : t.multiplier;
+                prodHtml += `
+                    <tr class="hover:bg-pink-50/40 transition-colors text-[10px]">
+                        <td class="py-1.5 px-2 font-semibold text-slate-800">${t.label}</td>
+                        <td class="py-1.5 px-2 text-slate-500 font-medium">${formatRupiah(t.incentivePerSA)}</td>
+                        <td class="py-1.5 px-2 font-bold text-slate-900" id="prod-sa-${idx}">0</td>
+                        <td class="py-1.5 px-2 text-slate-700 font-bold" id="prod-ins-${idx}">Rp 0</td>
+                        <td class="py-1.5 px-2 font-extrabold text-slate-700 rounded transition-all" id="prod-multi-${idx}">${colVal}</td>
+                    </tr>
+                `;
+            });
+            document.getElementById('productivityTableBody').innerHTML = prodHtml;
+        }
+
+        function updateSA(input) {
+            const type = input.getAttribute('data-type');
+            const idx = input.getAttribute('data-index');
+            let val = parseInt(input.value);
+            if (isNaN(val) || val < 0) val = 0;
+            
+            if (type === 'ftth') {
+                configData[currentType].ftthProducts[idx].sa = val;
+            } else if (type === 'fwa') {
+                configData[currentType].fwaProducts[idx].sa = val;
+            } else if (type === 'pxgy') {
+                configData[currentType].pxgyProducts[idx].sa = val;
+            }
+            calculateAll();
+        }
+
+        function calculateAll() {
+            const data = configData[currentType];
+            const baseSalaryVal = data.baseSalary;
+            
+            let totalFTTH_SA = 0;
+            let totalFTTH_Incentive = 0;
+            data.ftthProducts.forEach((p, idx) => {
+                const actIns = p.incentive * p.sa;
+                totalFTTH_SA += p.sa;
+                totalFTTH_Incentive += actIns;
+                document.getElementById(`ftth-ins-${idx}`).innerText = formatRupiah(actIns);
+            });
+
+            document.getElementById('ftthTotalSA').innerText = totalFTTH_SA;
+            document.getElementById('ftthTotalIncentive').innerText = formatRupiah(totalFTTH_Incentive);
+
+            let totalFWA_SA = 0;
+            let totalFWA_Incentive = 0;
+            data.fwaProducts.forEach((p, idx) => {
+                const fwaIns = p.incentive * p.sa;
+                totalFWA_SA += p.sa;
+                totalFWA_Incentive += fwaIns;
+                document.getElementById(`fwa-ins-${idx}`).innerText = formatRupiah(fwaIns);
+            });
+
+            document.getElementById('fwaTotalSA').innerText = totalFWA_SA;
+            document.getElementById('fwaTotalIncentive').innerText = formatRupiah(totalFWA_Incentive);
+
+            let totalPXGY_SA = 0;
+            let totalPXGY_Acq_Incentive = 0;
+            let totalPXGY_Special_Incentive = 0;
+            
+            data.pxgyProducts.forEach((p, idx) => {
+                const acqIns = p.acqIncentive * p.sa;
+                const specialIns = p.specialIncentive * p.sa;
+                
+                totalPXGY_SA += p.sa;
+                totalPXGY_Acq_Incentive += acqIns;
+                totalPXGY_Special_Incentive += specialIns;
+
+                document.getElementById(`pxgy-acq-ins-${idx}`).innerText = formatRupiah(acqIns);
+                document.getElementById(`pxgy-spc-ins-${idx}`).innerText = formatRupiah(specialIns);
+            });
+
+            document.getElementById('pxgyTotalSA').innerText = totalPXGY_SA;
+            document.getElementById('pxgyTotalAcqIncentive').innerText = formatRupiah(totalPXGY_Acq_Incentive);
+            document.getElementById('pxgyTotalSpecialIncentive').innerText = formatRupiah(totalPXGY_Special_Incentive);
+
+            let combinedTotalClosingSA = totalFTTH_SA + totalFWA_SA + totalPXGY_SA;
+            document.getElementById('combinedTotalClosingSA').innerText = combinedTotalClosingSA + " SA";
+
+            let remainingSA = combinedTotalClosingSA;
+            let prodTotalSAVal = 0;
+            let prodTotalInsentifVal = 0;
+            let tierAllocations = [];
+
+            if (currentType === 'ojt') {
+                let limits = [2, 2, 2, 3, Infinity];
+                data.productivityTiers.forEach((t, idx) => {
+                    let allocated = Math.min(Math.max(remainingSA, 0), limits[idx]);
+                    tierAllocations.push(allocated);
+                    remainingSA -= allocated;
+                });
+            } else {
+                let limits = [6, 3, 4, 16, 10, 10, Infinity];
+                data.productivityTiers.forEach((t, idx) => {
+                    let allocated = Math.min(Math.max(remainingSA, 0), limits[idx]);
+                    tierAllocations.push(allocated);
+                    remainingSA -= allocated;
+                });
+            }
+
+            data.productivityTiers.forEach((t, idx) => {
+                let saTier = tierAllocations[idx];
+                let insTier = saTier * t.incentivePerSA;
+
+                prodTotalSAVal += saTier;
+                prodTotalInsentifVal += insTier;
+
+                document.getElementById(`prod-sa-${idx}`).innerText = saTier;
+                document.getElementById(`prod-ins-${idx}`).innerText = formatRupiah(insTier);
+            });
+
+            document.getElementById('prodTotalSA').innerText = prodTotalSAVal;
+            document.getElementById('prodTotalInsentif').innerText = formatRupiah(prodTotalInsentifVal);
+
+            data.productivityTiers.forEach((t, idx) => {
+                document.getElementById(`prod-multi-${idx}`).classList.remove('stabilo-green-cell');
+            });
+
+            let sumProdMix = totalFTTH_Incentive;
+            let sumProdIncentive = prodTotalInsentifVal;
+            let sumSpecialFWA = totalFWA_Incentive;
+            let sumPXGYAcq = totalPXGY_Acq_Incentive;
+            let sumPXGYSpc = totalPXGY_Special_Incentive;
+            let totalIncentiveOnly = 0;
+
+            let baseAccumulatedForMultiplier = sumProdMix + sumSpecialFWA + sumPXGYAcq;
+
+            let proRewardVal = 0;
+            const proRewardRowEl = document.getElementById('proRewardRow');
+            if (currentType === 'pro' && combinedTotalClosingSA >= 26) {
+                proRewardVal = 2000000;
+                proRewardRowEl.classList.remove('hidden');
+            } else {
+                proRewardRowEl.classList.add('hidden');
+            }
+
+            if (currentType === 'ojt') {
+                let lumpSum = 0;
+                let activeRowIdx = -1;
+
+                if (prodTotalSAVal >= 7) {
+                    lumpSum = 600000;
+                    activeRowIdx = 3; 
+                } else if (prodTotalSAVal >= 3) {
+                    lumpSum = 325000;
+                    activeRowIdx = 1; 
+                }
+
+                if (activeRowIdx !== -1) {
+                    document.getElementById(`prod-multi-${activeRowIdx}`).classList.add('stabilo-green-cell');
+                }
+
+                document.getElementById('sumExtraTitle').innerText = 'Lump Sum Bonus:';
+                document.getElementById('sumExtraVal').innerText = formatRupiah(lumpSum);
+                document.getElementById('multiplierDetailCard').style.display = 'none';
+
+                totalIncentiveOnly = sumProdMix + sumProdIncentive + lumpSum + sumSpecialFWA + sumPXGYAcq + sumPXGYSpc + proRewardVal;
+            } else {
+                document.getElementById('multiplierDetailCard').style.display = 'block';
+
+                let multiplierVal = 0;
+                let activeRowIdx = -1;
+                let tierNameText = "-";
+
+                if (prodTotalSAVal >= 50) { multiplierVal = 4.65; activeRowIdx = 6; tierNameText = `${prodTotalSAVal} SA (>= 50)`; }
+                else if (prodTotalSAVal >= 40) { multiplierVal = 4.50; activeRowIdx = 5; tierNameText = `${prodTotalSAVal} SA (40 - 49)`; }
+                else if (prodTotalSAVal >= 30) { multiplierVal = 4.25; activeRowIdx = 4; tierNameText = `${prodTotalSAVal} SA (30 – 39)`; }
+                else if (prodTotalSAVal >= 14) { multiplierVal = 4.00; activeRowIdx = 3; tierNameText = `${prodTotalSAVal} SA (14 – 29)`; }
+                else if (prodTotalSAVal >= 10) { multiplierVal = 2.0; activeRowIdx = 2; tierNameText = `${prodTotalSAVal} SA (10 – 13)`; }
+                else if (prodTotalSAVal >= 7) { multiplierVal = 1.5; activeRowIdx = 1; tierNameText = `${prodTotalSAVal} SA (7 – 9)`; }
+                else if (prodTotalSAVal >= 1) { multiplierVal = 0; activeRowIdx = 0; tierNameText = `${prodTotalSAVal} SA (1 – 6)`; }
+                else { multiplierVal = 0; activeRowIdx = -1; tierNameText = `0 SA`; }
+
+                if (activeRowIdx !== -1) {
+                    document.getElementById(`prod-multi-${activeRowIdx}`).classList.add('stabilo-green-cell');
+                }
+
+                let multiIncentive = multiplierVal * baseAccumulatedForMultiplier;
+
+                document.getElementById('detailTierName').innerText = tierNameText;
+                document.getElementById('detailMultiplierVal').innerText = multiplierVal + 'x';
+                document.getElementById('detailBaseActivation').innerText = formatRupiah(baseAccumulatedForMultiplier);
+                document.getElementById('detailTotalMultiplierIns').innerText = formatRupiah(multiIncentive);
+
+                document.getElementById('sumExtraTitle').innerText = `Total Multiplier (${multiplierVal}x):`;
+                document.getElementById('sumExtraVal').innerText = formatRupiah(multiIncentive);
+
+                totalIncentiveOnly = sumProdMix + sumProdIncentive + multiIncentive + sumSpecialFWA + sumPXGYAcq + sumPXGYSpc + proRewardVal;
+            }
+
+            let grandTotal = baseSalaryVal + totalIncentiveOnly;
+
+            document.getElementById('dashBaseSalary').innerText = formatRupiah(baseSalaryVal);
+            document.getElementById('dashTotalIncentive').innerText = formatRupiah(totalIncentiveOnly);
+            document.getElementById('dashGrandTotal').innerText = formatRupiah(grandTotal);
+
+            document.getElementById('sumBaseSalary').innerText = formatRupiah(baseSalaryVal);
+            document.getElementById('sumProductMix').innerText = formatRupiah(sumProdMix);
+            document.getElementById('sumSpecialFWA').innerText = formatRupiah(sumSpecialFWA);
+            document.getElementById('sumPXGYAcq').innerText = formatRupiah(sumPXGYAcq);
+            document.getElementById('sumPXGYSpc').innerText = formatRupiah(sumPXGYSpc);
+            document.getElementById('sumProdIncentive').innerText = formatRupiah(sumProdIncentive);
+            document.getElementById('sumTotalIncentiveOnly').innerText = formatRupiah(totalIncentiveOnly);
+            document.getElementById('grandTotal').innerText = formatRupiah(grandTotal);
+        }
+    </script>
+</body>
+</html>
